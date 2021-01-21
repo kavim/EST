@@ -31,15 +31,22 @@ public class LoadData {
             br = new BufferedReader(new FileReader(arquivoCSV));
             indexingCSV(br.readLine());
 
-            while ((line = br.readLine()) != null) {
+            System.out.println("\nCarregando...\n");
 
-                System.out.println("\n\n"+line);
+            int iii = 0;
+
+            // Limit to save time :).
+            while ((line = br.readLine()) != null && iii < 1000) {
 
                 String[] row = line.split(csvDivisor);
 
                 records.add(new Product(Integer.parseInt(row[0].trim()), row[21]));
 
+                iii++;
+
             }
+
+            System.out.println("\nPronto! \n");
 
             this.setProducts(records);
 
