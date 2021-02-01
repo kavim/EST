@@ -1,5 +1,7 @@
 package Controller;
 
+import Model.BinaryTree;
+import Model.Nodo;
 import Model.Product;
 import Model.ProductStock;
 
@@ -8,9 +10,11 @@ import java.util.*;
 public class ProductController {
 
     protected ArrayList<Product> products;
+    protected BinaryTree theTree;
 
-    public ProductController(ArrayList<Product> products){
+    public ProductController(ArrayList<Product> products, BinaryTree theTree){
         this.products = products;
+        this.theTree = theTree;
     }
 
     public Product findById(int id){
@@ -48,7 +52,6 @@ public class ProductController {
         return found;
     }
 
-
     public ArrayList<Product> get() {
 
         for (Product p : products) {
@@ -72,7 +75,8 @@ public class ProductController {
         }
 
         if(p.getQueue().isEmpty()){
-            System.out.println("Fora de estoque");
+            System.out.println("F" +
+                    "ora de estoque");
         }else {
             for (ProductStock ps : p.getQueue()) {
                 System.out.println("Quant: " + ps.getQuantidade() + "\t data : "+ps.getData());
@@ -169,6 +173,18 @@ public class ProductController {
         }
 
         System.out.println("\n- - - - - - - - - - - - - - - - - - - -\nSucesso!\n- - - - - - - - - - - - - - - - - - - -\n");
+
+    }
+
+    public Product binarySearch(int id){
+
+        Nodo nodo = theTree.findNode(id);
+
+        if(nodo == null){
+            return null;
+        }
+
+        return nodo.getProduct();
 
     }
 }

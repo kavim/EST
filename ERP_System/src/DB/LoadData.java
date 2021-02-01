@@ -5,7 +5,9 @@
 
 package DB;
 
+import Model.BinaryTree;
 import Model.Product;
+import org.w3c.dom.Node;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -15,19 +17,16 @@ import java.util.ArrayList;
 
 public class LoadData {
 
-    protected ArrayList<Product> products;
+    protected  ArrayList<Product> records = new ArrayList();
     public static final String csvDivisor = ",(?=([^\"]*\"[^\"]*\")*[^\"]*$)";
 
     public void run() {
 
-//        String arquivoCSV = "C:\\Users\\kevin\\Documents\\GitHub\\EST\\Products.csv";
         String arquivoCSV = System.getProperty("user.dir")+"\\Products.csv"; //no windows funciona assim
         BufferedReader br = null;
         String line = "";
 
         try {
-            ArrayList<Product> records = new ArrayList();
-
             br = new BufferedReader(new FileReader(arquivoCSV));
             indexingCSV(br.readLine());
 
@@ -43,12 +42,13 @@ public class LoadData {
                 records.add(new Product(Integer.parseInt(row[0].trim()), row[21]));
 
                 iii++;
-
             }
 
             System.out.println("\nPronto! \n");
 
             this.setProducts(records);
+
+            this.populateTree();
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -77,12 +77,18 @@ public class LoadData {
     }
 
     public ArrayList<Product> getProducts() {
-        return products;
+        return records;
     }
 
     public void setProducts(ArrayList<Product> products) {
-        this.products = products;
+        this.records = records;
     }
 
-
+    public BinaryTree populateTree(){
+        BinaryTree theTree = new BinaryTree();
+        for (Product p : records) {
+            theTree.addNode(p.getId(), p);
+        }
+        return theTree;
+    }
 }

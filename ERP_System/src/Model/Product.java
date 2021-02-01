@@ -77,4 +77,13 @@ public class Product {
         return queue;
     }
 
+    public String productInfo(){
+
+        return  "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "
+                +"\n id: " + getId()
+                + "\n nome: " + this.getName()
+                + "\n quantidadeTotal: " + this.getTotal()
+                + "\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - \n";
+
+    }
 }

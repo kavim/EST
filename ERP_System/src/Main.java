@@ -2,9 +2,6 @@ import Controller.ProductController;
 import DB.LoadData;
 import Model.Product;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,7 +15,7 @@ public class Main {
 
         loadData.run(); //carregar informação na memoria
 
-        productController = new ProductController(loadData.getProducts());
+        productController = new ProductController(loadData.getProducts(), loadData.populateTree());
 
         menu();
     }
@@ -27,12 +24,12 @@ public class Main {
         System.out.println("\n1 – Buscar produto por código");
         System.out.println("2 – Buscar produto por nome.");
         System.out.println("3 – Retirar Produtos por Código.");
-        System.out.println("4 – showStock.");
+        System.out.println("4 – showStock");
+        System.out.println("5 – Buscar por produtos em árvore binária");
 
         Scanner input = new Scanner(System.in);
 
         int choice = input.nextInt();
-        System.out.println("\n------------------------------------------------------------------------------------------------------------------\n");
 
         if(choice == 1){
 
@@ -46,7 +43,7 @@ public class Main {
                 menu();
             }
 
-            System.out.println(found.getName());
+            System.out.println(found.productInfo());
 
             found.ImpStock();
 
@@ -56,19 +53,23 @@ public class Main {
         if(choice == 2){
 
             System.out.println("Digite o nome do produto");
+
             String nome = input.next();
+
             ArrayList<Product> founds = productController.findByName(nome);
 
             if(founds.isEmpty()){
                 System.out.println("Nenhum produto encontrado :(");
                 menu();
             }
+
             System.out.println("Buscando por : "+nome);
             for (Product p : founds ) {
-                System.out.println("\n\t"+p.getName());
+                System.out.println(p.productInfo());
             }
             System.out.println(founds.size() + " produtos encontrados");
 
+            menu();
         }
 
         if (choice == 3){
@@ -92,9 +93,26 @@ public class Main {
 
         }
 
+        if (choice == 5){
+
+            System.out.println("Digite o codigo do produto");
+            int id = input.nextInt();
+
+            Product found = productController.binarySearch(id);
+
+            if(found == null){
+                System.out.println("Nenhum produto encontrado :(");
+                menu();
+            }
+
+            System.out.println(found.productInfo());
+
+            menu();
+
+        }
 
         input.close();
-        System.out.println("------------------------------------------------------------------------------------------------------------------");
+
         menu();
     }
 
